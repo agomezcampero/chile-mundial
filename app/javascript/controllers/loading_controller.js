@@ -31,5 +31,10 @@ export default class extends Controller {
     this.textTargets.forEach(text => {
       text.classList.remove("opacity-0")
     })
+  
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   }
 } 
