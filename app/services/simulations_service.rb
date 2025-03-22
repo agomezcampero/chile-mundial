@@ -87,6 +87,8 @@ class SimulationsService
       simulate_random_match(match)
     elsif @simulation_type == "too_good_to_be_true"
       simulate_too_good_to_be_true_match(match)
+    elsif @simulation_type == "fifa_ranking"
+      simulate_fifa_ranking_match(match)
     end
 
     match.played = true
@@ -123,14 +125,50 @@ class SimulationsService
     elsif direct_rival?(match.away_team)
       match.home_goals = 3
       match.away_goals = 0
-    elsif match.home_team == colombia
+    elsif match.home_team == paraguay
       match.home_goals = 0
       match.away_goals = 3
-    elsif match.away_team == colombia
+    elsif match.away_team == paraguay
       match.home_goals = 3
       match.away_goals = 0
     else
       simulate_random_match(match)
+    end
+  end
+
+  def simulate_fifa_ranking_match(match)
+    home_ranking = match.home_team.fifa_ranking
+    away_ranking = match.away_team.fifa_ranking
+
+    # Calculate probability based on FIFA ranking difference
+    ranking_diff = (home_ranking - away_ranking).abs
+    home_advantage = 20 # Home advantage factor
+
+    home_win_probability = if home_ranking < away_ranking # Lower ranking is better
+      0.5 + (ranking_diff / 100.0) + (home_advantage / 100.0)
+    else
+      0.5 - (ranking_diff / 100.0) + (home_advantage / 100.0)
+    end
+
+    # Clamp probability between 0.2 and 0.8
+    home_win_probability = home_win_probability.clamp(0.2, 0.8)
+
+    # Determine match result based on probability
+    result = rand
+
+    if result < home_win_probability
+      # Home team wins
+      match.home_goals = [1, 2, 3, 4].sample
+      match.away_goals = [0, 1, 2].sample
+      match.away_goals = [match.home_goals - 1, 0].max if match.away_goals >= match.home_goals
+    elsif result < home_win_probability + 0.2 # 20% chance of draw
+      goals = [0, 1, 2].sample
+      match.home_goals = goals
+      match.away_goals = goals
+    else
+      match.away_goals = [1, 2, 3].sample
+      match.home_goals = [0, 1, 2].sample
+      match.home_goals = [match.away_goals - 1, 0].max if match.home_goals >= match.away_goals
     end
   end
 
@@ -142,7 +180,7 @@ class SimulationsService
     @direct_rivals ||= [NationalTeam.bolivia, NationalTeam.venezuela, NationalTeam.peru]
   end
 
-  def colombia
-    @colombia ||= NationalTeam.colombia
+  def paraguay
+    @paraguay ||= NationalTeam.paraguay
   end
 end

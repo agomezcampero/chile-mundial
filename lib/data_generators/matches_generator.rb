@@ -691,8 +691,8 @@ class DataGenerators::MatchesGenerator
       home_team: NationalTeam.uruguay,
       away_team: NationalTeam.argentina,
       home_goals: 0,
-      away_goals: 0,
-      played: false
+      away_goals: 1,
+      played: true
     )
   end
 
