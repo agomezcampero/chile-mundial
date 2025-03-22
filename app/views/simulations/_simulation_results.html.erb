@@ -1,5 +1,5 @@
 <div class="p-4">
-  <% if world_cup_probability + playoff_probability > 50 %>
+  <% if world_cup_probability + playoff_probability > 10 %>
     <%= image_tag "ilusionar.jpeg", class: "w-full rounded-lg mb-4 h-48 object-cover" %>
   <% else %>
     <%= image_tag "vidal_triste.jpg", class: "w-full rounded-lg mb-4 h-48 object-cover" %>
@@ -13,14 +13,14 @@
     </div>
     
     <div class="bg-yellow-100 border border-yellow-200 rounded-lg p-4 text-center">
-      <h3 class="text-lg font-medium text-yellow-800 mb-1">Repechaje ⚔️</h3>
+      <h3 class="font-medium text-yellow-800 mb-1">Repechaje ⚔️</h3>
       <p class="text-2xl font-bold text-yellow-600">
         <%= playoff_probability.round(1) %>%
       </p>
     </div>
     
     <div class="bg-red-100 border border-red-200 rounded-lg p-4 text-center">
-      <h3 class="text-lg font-medium text-red-800 mb-1">Por TV 📺</h3>
+      <h3 class="font-medium text-red-800 mb-1">Por TV 📺</h3>
       <p class="text-2xl font-bold text-red-600">
         <%= elimination_probability.round(1) %>%
       </p>
