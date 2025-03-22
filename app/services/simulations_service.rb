@@ -17,9 +17,10 @@ class SimulationsService
   ]
 
   # results is a hash of match_id => {home_goals: int, away_goals: int}
-  def initialize(results)
+  def initialize(results, simulation_type: "random")
     @matches = Match.all.includes(:home_team, :away_team)
     @original_standings = NationalTeam.standings_hash
+    @simulation_type = simulation_type
 
     results.each do |match_id, score|
       match = @matches.find { |m| m.id.to_s == match_id }
@@ -82,7 +83,13 @@ class SimulationsService
   end
 
   def simulate_and_store_match_results(match)
-    match = simulate_random_match(match)
+    if @simulation_type == "random"
+      simulate_random_match(match)
+    elsif @simulation_type == "too_good_to_be_true"
+      simulate_too_good_to_be_true_match(match)
+    end
+
+    match.played = true
 
     @simulation_standings[match.home_team.name] = {
       matches_played: @simulation_standings[match.home_team.name][:matches_played] + 1,
@@ -104,8 +111,38 @@ class SimulationsService
   def simulate_random_match(match)
     match.home_goals = HOME_GOALS_DISTRIBUTION.sample
     match.away_goals = AWAY_GOALS_DISTRIBUTION.sample
-    match.played = true
+  end
 
-    match
+  def simulate_too_good_to_be_true_match(match)
+    if direct_rival?(match.home_team) && direct_rival?(match.away_team)
+      match.home_goals = 0
+      match.away_goals = 0
+    elsif direct_rival?(match.home_team)
+      match.home_goals = 0
+      match.away_goals = 3
+    elsif direct_rival?(match.away_team)
+      match.home_goals = 3
+      match.away_goals = 0
+    elsif match.home_team == colombia
+      match.home_goals = 0
+      match.away_goals = 3
+    elsif match.away_team == colombia
+      match.home_goals = 3
+      match.away_goals = 0
+    else
+      simulate_random_match(match)
+    end
+  end
+
+  def direct_rival?(team)
+    direct_rivals.include?(team)
+  end
+
+  def direct_rivals
+    @direct_rivals ||= [NationalTeam.bolivia, NationalTeam.venezuela, NationalTeam.peru]
+  end
+
+  def colombia
+    @colombia ||= NationalTeam.colombia
   end
 end

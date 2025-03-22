@@ -47,6 +47,10 @@ class NationalTeam < ApplicationRecord
     end
   end
 
+  def direct_rival?
+    self.class.direct_rivals.include?(self)
+  end
+
   def self.argentina
     find_by(name: "Argentina")
   end
@@ -93,6 +97,7 @@ end
 # Table name: national_teams
 #
 #  id           :integer          not null, primary key
+#  emoji        :string
 #  fifa_ranking :integer          not null
 #  name         :string           not null
 #  created_at   :datetime         not null

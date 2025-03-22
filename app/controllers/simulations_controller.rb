@@ -9,8 +9,7 @@ class SimulationsController < ApplicationController
 
   def simulate
     results = params[:results].to_unsafe_h
-    Rails.logger.info("Results: #{results}")
-    simulation_results = SimulationsService.new(results).run
+    simulation_results = SimulationsService.new(results, simulation_type: params[:simulation_type]).run
 
     render turbo_stream: [
       turbo_stream.update("simulation_results", partial: "simulations/simulation_results", locals: { simulation_results: simulation_results })

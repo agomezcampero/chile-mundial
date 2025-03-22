@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_21_234942) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_22_012411) do
   create_table "matches", force: :cascade do |t|
     t.date "date"
     t.integer "home_team_id", null: false
@@ -29,6 +29,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_21_234942) do
     t.integer "fifa_ranking", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "emoji"
   end
 
   add_foreign_key "matches", "national_teams", column: "away_team_id"

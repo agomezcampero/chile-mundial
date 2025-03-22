@@ -13,6 +13,7 @@ two:
 # Table name: national_teams
 #
 #  id           :integer          not null, primary key
+#  emoji        :string
 #  fifa_ranking :integer          not null
 #  name         :string           not null
 #  created_at   :datetime         not null
