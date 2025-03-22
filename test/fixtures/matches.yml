@@ -1,0 +1,40 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2025-03-21
+  home_team: one
+  away_team: one
+  home_goals: 1
+  away_goals: 1
+
+two:
+  date: 2025-03-21
+  home_team: two
+  away_team: two
+  home_goals: 1
+  away_goals: 1
+
+# == Schema Information
+#
+# Table name: matches
+#
+#  id           :integer          not null, primary key
+#  away_goals   :integer          not null
+#  date         :date
+#  home_goals   :integer          not null
+#  played       :boolean          default(FALSE)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  away_team_id :integer          not null
+#  home_team_id :integer          not null
+#
+# Indexes
+#
+#  index_matches_on_away_team_id  (away_team_id)
+#  index_matches_on_home_team_id  (home_team_id)
+#
+# Foreign Keys
+#
+#  away_team_id  (away_team_id => national_teams.id)
+#  home_team_id  (home_team_id => national_teams.id)
+#

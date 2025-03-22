@@ -1,0 +1,43 @@
+<div class="w-full text-center mb-4 p-4 bg-red-500 text-white">
+  <h1 class="text-xl font-bold">Chile va al Mundial?</h1>
+  <p class="text-xs">"Nada es imposible, ni una hueá" - Nicolás Massú</p>
+</div>
+
+<%= turbo_frame_tag "simulation_results" %>
+
+<!-- Match inputs -->
+<div class="bg-white shadow rounded-lg p-4 mb-8">
+  <h2 class="font-semibold text-gray-900 mb-6">Ingresa los resultados de los partidos</h2>
+  <%= form_with url: simulate_simulations_path, method: :post, class: "space-y-6", id: "simulation-form", data: { remote: true } do |form| %>
+    <% @unplayed_matches.each do |match| %>
+      <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center space-x-4 flex-1">
+          <span class="text-right w-24 font-medium <%= match.home_team == @chile ? 'text-red-600' : 'text-gray-700' %>">
+            <%= match.home_team.name %>
+          </span>
+          <div class="flex items-center space-x-2">
+            <%= form.number_field "results[#{match.id}][home_goals]", 
+                    class: "w-16 text-center border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500",
+                    value: 0,
+                    min: 0,
+                    required: true %>
+            <span class="text-gray-500">-</span>
+            <%= form.number_field "results[#{match.id}][away_goals]", 
+                    class: "w-16 text-center border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500",
+                    value: 0,
+                    min: 0,
+                    required: true %>
+          </div>
+          <span class="w-24 font-medium <%= match.away_team == @chile ? 'text-red-600' : 'text-gray-700' %>">
+            <%= match.away_team.name %>
+          </span>
+        </div>
+      </div>
+    <% end %>
+    
+    <div class="text-center">
+      <%= form.submit "Run Simulations", 
+            class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+    </div>
+  <% end %>
+</div>

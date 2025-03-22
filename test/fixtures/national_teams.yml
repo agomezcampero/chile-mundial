@@ -1,0 +1,20 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  fifa_ranking: 1
+
+two:
+  name: MyString
+  fifa_ranking: 1
+
+# == Schema Information
+#
+# Table name: national_teams
+#
+#  id           :integer          not null, primary key
+#  fifa_ranking :integer          not null
+#  name         :string           not null
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
