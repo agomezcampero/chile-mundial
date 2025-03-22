@@ -6,7 +6,7 @@
 <%= turbo_frame_tag "simulation_results" %>
 
 <!-- Match inputs -->
-<div class="bg-white shadow rounded-lg p-4 mb-8">
+<div class="p-4 mb-8">
   <div class="text-center text-gray-500 text-sm">Ingresa los resultados</div>
   <%= form_with url: simulate_simulations_path, method: :post, class: "space-y-2", id: "simulation-form", 
                 data: { controller: "loading",
